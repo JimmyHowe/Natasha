@@ -1,0 +1,55 @@
+    if ( event.getSource() == addEntryButton )
+        {
+            try
+            {
+                if ( CheckClassSize() == false )
+                {
+                    outputArea.setText("Class Size is bigger than Room Size - Adding entry prevented");
+                } else if ( validateFields() == false )
+                {
+                    outputArea.setText("Invalid Entry - Please make sure all textfields are filled.");
+                } else
+                {
+                    String name = nameField.getText();
+                    String day = dayField.getText();
+                    String weekPattern = weekPatternField.getText();
+                    String location = locationField.getText();
+                    String startTime = startTimeField.getText();
+                    String endTime = endTimeField.getText();
+                    String staffMember = staffMemberField.getText();
+                    String department = departmentField.getText();
+                    String roomSize = roomSizeField.getText();
+                    String classSize = classSizeField.getText();
+
+                    Entry entry = null;
+
+                    switch ( classTypeCombo.getSelectedIndex() )
+                    {
+                        case 0: // Lecture
+                            entry = new Lecture(name, day, startTime, endTime, weekPattern, location, roomSize, classSize, staffMember, department);
+                        case 1: // Practical
+                            entry = new Practical(name, day, startTime, endTime, weekPattern, location, roomSize, classSize, staffMember, department);
+                        case 2: // Seminar
+                            entry = new Seminar(name, day, startTime, endTime, weekPattern, location, roomSize, classSize, staffMember, department);
+                        case 3: // Tutorial
+                            entry = new Seminar(name, day, startTime, endTime, weekPattern, location, roomSize, classSize, staffMember, department);
+                    }
+
+                    if(entry != null)
+                    {
+                        if ( timetable.entryExists(entry) )
+                        {
+                            outputArea.setText("Record for " + entry.getName().toUpperCase() + " already exists!");
+                        } else {
+                            timetable.addEntry(entry);
+                            outputArea.setText("Record added\n" + entry.getEntry());
+                        }
+                    }
+                }
+            } catch ( Exception e1 )
+            {
+                outputArea.setText("ERROR 1: Invalid Entry :- Make sure the correct data is entered");
+            }
+
+            blankDisplay();
+        }
